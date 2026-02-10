@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Together - Đồng hành cùng tân sinh viên FPT Đà Nẵng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        /* Reset và biến màu sắc */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #FF6B35; /* Cam chủ đạo */
+            --primary-dark: #E55A2B;
+            --secondary-color: #4ECDC4; /* Xanh phụ */
+            --light-color: #FFFFFF;
+            --dark-color: #292F36;
+            --gray-color: #F7F7F7;
+            --text-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+            --fpt-green: #009247; /* Màu xanh FPT */
+            --fpt-blue: #0056B3; /* Màu xanh dương FPT */
+        }
+
+        body {
+            background-color: var(--gray-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--light-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .logo span {
+            color: var(--fpt-green);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active {
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 107, 53, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-fpt {
+            background-color: var(--fpt-green);
+            color: white;
+        }
+
+        .btn-fpt:hover {
+            background-color: #007a3d;
+            transform: translateY(-2px);
+        }
+
+        /* Banner chính */
+        .hero {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 146, 71, 0.1) 100%);
+            padding: 80px 0;
+            margin-bottom: 60px;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--fpt-green);
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Nội dung nổi bật */
+        .section-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--dark-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .section-title.fpt::after {
+            background-color: var(--fpt-green);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .feature-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-image {
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-image img {
+            transform: scale(1.05);
+        }
+
+        .feature-content {
+            padding: 25px;
+        }
+
+        .feature-content h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .feature-content p {
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Thống kê nhanh */
+        .stats {
+            background-color: var(--light-color);
+            padding: 60px 0;
+            margin-bottom: 80px;
+            box-shadow: var(--shadow);
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-text {
+            font-size: 18px;
+            color: var(--dark-color);
+        }
+
+        /* Quiz hôm nay */
+        .quiz-today {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 80px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .quiz-content {
+            flex: 1;
+        }
+
+        .quiz-content h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        .quiz-content p {
+            margin-bottom: 25px;
+        }
+
+        .quiz-progress {
+            background-color: var(--gray-color);
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 65%;
+            border-radius: 5px;
+            transition: width 1.5s ease;
+        }
+
+        .quiz-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .quiz-image img {
+            max-width: 100%;
+            border-radius: var(--border-radius);
+        }
+
+        /* Phần Hoạt động FPT */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .activity-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .activity-header {
+            background-color: var(--fpt-green);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .activity-header h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .activity-date {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .activity-body {
+            padding: 25px;
+        }
+
+        .activity-body p {
+            margin-bottom: 15px;
+        }
+
+        .activity-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .activity-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+        }
+
+        /* Phần Cộng đồng */
+        .community-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .community-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .community-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .community-icon {
+            font-size: 48px;
+            color: var(--fpt-green);
+            margin-bottom: 20px;
+        }
+
+        .community-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+
+        .community-card p {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .forum-posts {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 80px;
+        }
+
+        .forum-post {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .forum-post:hover {
+            background-color: rgba(0, 146, 71, 0.05);
+        }
+
+        .forum-post:last-child {
+            border-bottom: none;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .post-author {
+            font-weight: 600;
+            color: var(--fpt-green);
+        }
+
+        .post-time {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #777;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .post-action:hover {
+            color: var(--primary-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-color);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        .modal h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        /* Quiz modal */
+        .quiz-modal .modal-content {
+            max-width: 700px;
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+        }
+
+        .quiz-question h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            background-color: rgba(255, 107, 53, 0.05);
+            border-color: var(--primary-color);
+        }
+
+        .quiz-option.selected {
+            background-color: rgba(255, 107, 53, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .quiz-result h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .quiz-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+        .quiz-result-details {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        /* Bảng xếp hạng */
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ranking-table th {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            font-weight: 600;
+        }
+
+        .ranking-table tr:hover {
+            background-color: rgba(255, 107, 53, 0.05);
+        }
+
+        .ranking-table .rank {
+            font-weight: 700;
+            width: 60px;
+            text-align: center;
+        }
+
+        .ranking-table .rank-1 {
+            color: #FFD700;
+        }
+
+        .ranking-table .rank-2 {
+            color: #C0C0C0;
+        }
+
+        .ranking-table .rank-3 {
+            color: #CD7F32;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            padding: 60px 0 30px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--light-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Các phần ẩn ban đầu */
+        .hidden-section {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-text {
+                order: 2;
+            }
+            
+            .hero-image {
+                order: 1;
+            }
+            
+            .quiz-today {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .activities-grid,
+            .community-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .modal-content {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-item {
+                min-width: 100%;
+            }
+            
+            .ranking-table {
+                font-size: 14px;
+            }
+            
+            .ranking-table th,
+            .ranking-table td {
+                padding: 10px 5px;
+            }
+            
+            .post-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Study</span>Together
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link active" data-section="home">Trang chủ</a></li>
+                    <li><a href="#" class="nav-link" data-section="knowledge">Kiến thức</a></li>
+                    <li><a href="#" class="nav-link" data-section="quiz">Quiz</a></li>
+                    <li><a href="#" class="nav-link" data-section="activities">Hoạt động</a></li>
+                    <li><a href="#" class="nav-link" data-section="community">Cộng đồng</a></li>
+                    <li><a href="#" class="nav-link" data-section="ranking">Vinh danh</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline" id="loginBtn">Đăng nhập</a>
+                <a href="#" class="btn btn-primary" id="registerBtn">Đăng ký</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Trang chủ -->
+        <section id="home-section" class="content-section">
+            <!-- Banner chính -->
+            <section class="hero">
+                <div class="container hero-content">
+                    <div class="hero-text">
+                        <h1>Chào mừng tân sinh viên <span>FPT Đà Nẵng</span><br>Học tập - Kết nối - Phát triển</h1>
+                        <p>Study Together đồng hành cùng tân sinh viên FPTU Đà Nẵng trong những bước đầu đại học với kiến thức, kinh nghiệm và kỹ năng cần thiết để nhanh chóng thích nghi với môi trường mới.</p>
+                        <div class="hero-buttons">
+                            <a href="#" class="btn btn-primary" id="startNowBtn">Bắt đầu ngay</a>
+                            <a href="#" class="btn btn-fpt" id="dailyQuizBtn">Làm quiz hôm nay</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Sinh viên FPT Đà Nẵng">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Nội dung nổi bật -->
+            <div class="container">
+                <h2 class="section-title">Nội dung nổi bật</h2>
+                
+                <div class="features" id="featured-content">
+                    <!-- Nội dung sẽ được tải động bằng JavaScript -->
+                </div>
+            </div>
+
+            <!-- Thống kê nhanh -->
+            <section class="stats">
+                <div class="container stats-container">
+                    <div class="stat-item">
+                        <div class="stat-number" id="studentCount">0</div>
+                        <div class="stat-text">Sinh viên FPT Đang tham gia</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="quizCompleted">0</div>
+                        <div class="stat-text">Quiz đã hoàn thành hôm nay</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="upcomingEvents">0</div>
+                        <div class="stat-text">Sự kiện sắp diễn ra</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz hôm nay -->
+            <div class="container">
+                <div class="quiz-today">
+                    <div class="quiz-content">
+                        <h3>Quiz hằng ngày - FPT Đà Nẵng</h3>
+                        <p>Thử thách bản thân với quiz hôm nay để ôn lại kiến thức và nhận điểm hoạt động. Quiz được xây dựng từ nội dung bài viết và video trên website.</p>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" id="quizProgressBar"></div>
+                        </div>
+                        <p><strong id="quizPercentage">0% sinh viên</strong> đã hoàn thành quiz hôm nay</p>
+                        <a href="#" class="btn btn-primary" id="takeQuizBtn">Làm quiz ngay</a>
+                    </div>
+                    <div class="quiz-image">
+                        <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Quiz hằng ngày">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kiến thức -->
+        <section id="knowledge-section" class="content-section hidden-section">
+            <div class="container">
+                <h2 class="section-title">Kiến thức cho tân sinh viên FPT</h2>
+                <div class="features" id="knowledge-content">
+                    <!-- Nội dung kiến thức sẽ được tải động -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section id="quiz-section" class="content-section hidden-section">
+            <div class="container">
+                <h2 class="section-title">Quiz hàng ngày</h2>
+                <div class="quiz-today">
+                    <div class="quiz-content">
+                        <h3>Tham gia quiz để tích lũy điểm</h3>
+                        <p>Mỗi ngày có 1 bộ quiz với 5-10 câu hỏi từ các bài viết và video trên website. Hoàn thành quiz để nhận điểm hoạt động và xếp hạng.</p>
+                        <div class="quiz-progress">
+                            <div class="quiz-progress-bar" id="quizProgressBar2"></div>
+                        </div>
+                        <p><strong id="quizPercentage2">0% sinh viên</strong> đã hoàn thành quiz hôm nay</p>
+                        <a href="#" class="btn btn-primary" id="takeQuizBtn2">Làm quiz ngay</a>
+                    </div>
+                    <div class="quiz-image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Quiz hằng ngày">
+                    </div>
+                </div>
+                
+                <h3 class="section-title" style="margin-top: 60px; font-size: 24px;">Lịch sử quiz của bạn</h3>
+                <div id="quiz-history">
+                    <!-- Lịch sử quiz sẽ được tải động -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Hoạt động -->
+        <section id="activities-section" class="content-section hidden-section">
+            <div class="container">
+                <h2 class="section-title fpt">Hoạt động FPT Đà Nẵng</h2>
+                <p style="text-align: center; margin-bottom: 40px; font-size: 18px;">Các sự kiện, hoạt động ngoại khóa và talkshow dành cho sinh viên FPTU Đà Nẵng</p>
+                
+                <div class="activities-grid" id="activities-content">
+                    <!-- Nội dung hoạt động sẽ được tải động -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="btn btn-fpt" id="loadMoreActivities">Xem thêm hoạt động</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cộng đồng -->
+        <section id="community-section" class="content-section hidden-section">
+            <div class="container">
+                <h2 class="section-title fpt">Cộng đồng FPT Đà Nẵng</h2>
+                <p style="text-align: center; margin-bottom: 40px; font-size: 18px;">Kết nối, chia sẻ và học hỏi cùng cộng đồng sinh viên FPTU Đà Nẵng</p>
+                
+                <div class="community-container">
+                    <div class="community-card">
+                        <div class="community-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Diễn đàn thảo luận</h3>
+                        <p>Thảo luận, đặt câu hỏi và chia sẻ kinh nghiệm học tập với sinh viên FPT</p>
+                        <button class="btn btn-fpt" id="joinForumBtn">Tham gia ngay</button>
+                    </div>
+                    
+                    <div class="community-card">
+                        <div class="community-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Nhóm học tập</h3>
+                        <p>Kết nối với các nhóm học tập theo môn học, chuyên ngành tại FPT</p>
+                        <button class="btn btn-fpt" id="findGroupBtn">Tìm nhóm</button>
+                    </div>
+                    
+                    <div class="community-card">
+                        <div class="community-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3>Hỏi đáp cùng giảng viên</h3>
+                        <p>Đặt câu hỏi trực tiếp với giảng viên và mentor FPT Đà Nẵng</p>
+                        <button class="btn btn-fpt" id="askQuestionBtn">Đặt câu hỏi</button>
+                    </div>
+                </div>
+                
+                <div class="forum-posts">
+                    <h3 style="margin-bottom: 25px; font-size: 24px;">Bài viết mới từ cộng đồng</h3>
+                    <div id="forum-posts-content">
+                        <!-- Bài viết diễn đàn sẽ được tải động -->
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-outline" id="createPostBtn">Tạo bài viết mới</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vinh danh -->
+        <section id="ranking-section" class="content-section hidden-section">
+            <div class="container">
+                <h2 class="section-title">Bảng xếp hạng FPT Đà Nẵng</h2>
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <button class="btn btn-outline" id="weeklyRankingBtn" style="margin-right: 10px;">Xếp hạng tuần</button>
+                    <button class="btn btn-primary" id="monthlyRankingBtn">Xếp hạng tháng</button>
+                </div>
+                
+                <div id="ranking-content">
+                    <!-- Bảng xếp hạng sẽ được tải động -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal đăng ký/đăng nhập -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAuthModal">&times;</span>
+            <h2 id="modalTitle">Đăng ký tài khoản</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="userType">Bạn là:</label>
+                    <select id="userType" name="userType">
+                        <option value="student">Sinh viên FPT</option>
+                        <option value="lecturer">Giảng viên FPT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Họ và tên:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email FPT:</label>
+                    <input type="email" id="email" name="email" placeholder="example@fpt.edu.vn" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group" id="confirmPasswordGroup">
+                    <label for="confirmPassword">Xác nhận mật khẩu:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="authSubmitBtn">Đăng ký</button>
+                <p style="margin-top: 15px; text-align: center;">
+                    <a href="#" id="switchAuthMode">Đã có tài khoản? Đăng nhập ngay</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal quiz -->
+    <div class="modal quiz-modal" id="quizModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeQuizModal">&times;</span>
+            <div id="quizQuestions">
+                <!-- Câu hỏi quiz sẽ được tải động -->
+            </div>
+            <div id="quizResult" style="display: none;">
+                <!-- Kết quả quiz sẽ được hiển thị -->
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-primary" id="submitQuizBtn" style="display: none;">Nộp bài</button>
+                <button class="btn btn-outline" id="closeQuizResultBtn" style="display: none;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal tạo bài viết cộng đồng -->
+    <div class="modal" id="createPostModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closePostModal">&times;</span>
+            <h2>Tạo bài viết mới</h2>
+            <form id="postForm">
+                <div class="form-group">
+                    <label for="postTitle">Tiêu đề:</label>
+                    <input type="text" id="postTitle" name="postTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="postCategory">Chuyên mục:</label>
+                    <select id="postCategory" name="postCategory">
+                        <option value="study">Học tập</option>
+                        <option value="activity">Hoạt động</option>
+                        <option value="question">Hỏi đáp</option>
+                        <option value="share">Chia sẻ</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Nội dung:</label>
+                    <textarea id="postContent" name="postContent" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-fpt">Đăng bài</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>StudyTogether - FPT Đà Nẵng</h3>
+                    <p>Website đồng hành cùng tân sinh viên FPTU Đà Nẵng trong những bước đầu đại học. Học mà không áp lực - Kết nối - Chia sẻ - Phát triển.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liên kết nhanh</h3>
+                    <ul>
+                        <li><a href="#" class="footer-nav" data-section="home">Trang chủ</a></li>
+                        <li><a href="#" class="footer-nav" data-section="knowledge">Kiến thức</a></li>
+                        <li><a href="#" class="footer-nav" data-section="quiz">Quiz hằng ngày</a></li>
+                        <li><a href="#" class="footer-nav" data-section="activities">Hoạt động FPT</a></li>
+                        <li><a href="#" class="footer-nav" data-section="community">Cộng đồng</a></li>
+                        <li><a href="#" class="footer-nav" data-section="ranking">Bảng xếp hạng</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Danh mục nội dung</h3>
+                    <ul>
+                        <li><a href="#">Học tập tại FPT</a></li>
+                        <li><a href="#">Kỹ năng mềm</a></li>
+                        <li><a href="#">Đời sống sinh viên FPT</a></li>
+                        <li><a href="#">Định hướng nghề nghiệp</a></li>
+                        <li><a href="#">Hoạt động ngoại khóa</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liên hệ</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Khu đô thị FPT City, Ngũ Hành Sơn, Đà Nẵng</li>
+                        <li><i class="fas fa-phone"></i> (0236) 710 9999</li>
+                        <li><i class="fas fa-envelope"></i> studytogether@fpt.edu.vn</li>
+                        <li><i class="fas fa-globe"></i> fpt.edu.vn</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 StudyTogether - Đại học FPT Đà Nẵng. Tất cả các quyền được bảo lưu.</p>
+                <p>Website được xây dựng nhằm hỗ trợ tân sinh viên FPT thích nghi với môi trường đại học.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toastr Notification -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <script>
+        // Dữ liệu mẫu cho website StudyTogether - FPT Đà Nẵng
+        const sampleData = {
+            featuredContent: [
+                {
+                    id: 1,
+                    title: "5 bí quyết quản lý thời gian hiệu quả cho tân sinh viên FPT",
+                    description: "Khám phá những phương pháp giúp bạn cân bằng giữa học tập, hoạt động ngoại khóa và cuộc sống cá nhân trong môi trường đại học.",
+                    image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    type: "article",
+                    readTime: "5 phút đọc",
+                    date: "15/10/2023"
+                },
+                {
+                    id: 2,
+                    title: "Kỹ năng làm việc nhóm: Đừng để 'teamwork' trở thành 'cạnh tranh'",
+                    description: "Video ngắn chia sẻ kinh nghiệm làm việc nhóm hiệu quả, tránh những mâu thuẫn không đáng có trong quá trình học tập.",
+                    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    type: "video",
+                    readTime: "3 phút xem",
+                    date: "12/10/2023"
+                },
+                {
+                    id: 3,
+                    title: "Quiz: Bạn đã sẵn sàng cho kỳ thi giữa kỳ tại FPT?",
+                    description: "Kiểm tra kiến thức và kỹ năng quản lý thời gian của bạn với 8 câu hỏi thực tế về chuẩn bị cho kỳ thi giữa kỳ.",
+                    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    type: "quiz",
+                    readTime: "8 câu hỏi",
+                    date: "Hôm nay"
+                }
+            ],
+            
+            knowledgeContent: [
+                {
+                    id: 4,
+                    title: "Cách ghi chép bài hiệu quả trong giảng đường đại học FPT",
+                    description: "Khác với cấp 3, đại học FPT yêu cầu phương pháp ghi chép khoa học hơn. Tìm hiểu các kỹ thuật ghi chép hiệu quả.",
+                    image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    type: "article",
+                    readTime: "6 phút đọc",
+                    date: "10/10/2023",
+                    category: "Học tập"
+                },
+                {
+                    id: 5,
+                    title: "Vượt qua sốc văn hóa khi chuyển từ tỉnh lên Đà Nẵng học tại FPT",
+                    description: "Nhiều tân sinh viên gặp khó khăn khi phải thích nghi với môi trường mới. Bài viết chia sẻ cách vượt qua sốc văn hóa.",
+                    image: "https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    type: "article",
+                    readTime: "7 phút đọc",
+                    date: "08/10/2023",
+                    category: "Đời sống sinh viên"
+                },
+                {
+                    id: 6,
+                    title: "Kỹ năng thuyết trình trước đám đông cho người mới bắt đầu",
+                    description: "Thuyết trình là kỹ năng không thể thiếu trong môi trường đại học FPT. Video hướng dẫn từng bước để tự tin thuyết trình.",
+                    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                    type: "video",
+                    readTime: "4 phút xem",
+                    date: "05/10/2023",
+                    category: "Kỹ năng mềm"
+                }
+            ],
+            
+            activitiesContent: [
+                {
+                    id: 1,
+                    title: "Ngày hội tuyển sinh FPT Open Day 2023",
+                    date: "28/10/2023",
+                    time: "8:00 - 17:00",
+                    location: "Sân trường FPT University, Đà Nẵng",
+                    description: "Tham gia ngày hội tuyển sinh để trải nghiệm môi trường học tập tại FPT, gặp gỡ giảng viên và cựu sinh viên thành đạt.",
+                    participants: 150,
+                    status: "sắp diễn ra"
+                },
+                {
+                    id: 2,
+                    title: "Workshop: Kỹ năng lập trình cho người mới bắt đầu",
+                    date: "25/10/2023",
+                    time: "14:00 - 16:30",
+                    location: "Phòng lab 301, Tòa nhà Innovation",
+                    description: "Workshop dành cho tân sinh viên ngành CNTT, hướng dẫn các kỹ năng lập trình cơ bản và tư duy giải quyết vấn đề.",
+                    participants: 80,
+                    status: "sắp diễn ra"
+                },
+                {
+                    id: 3,
+                    title: "Talkshow: Hành trình khởi nghiệp từ sinh viên FPT",
+                    date: "20/10/2023",
+                    time: "18:30 - 20:30",
+                    location: "Hội trường lớn, Tòa nhà Alpha",
+                    description: "Giao lưu với các cựu sinh viên FPT thành công trong lĩnh vực khởi nghiệp, chia sẻ kinh nghiệm và bài học quý giá.",
+                    participants: 200,
+                    status: "đã diễn ra"
+                },
+                {
+                    id: 4,
+                    title: "Cuộc thi FPT Hackathon 2023",
+                    date: "15-17/11/2023",
+                    time: "Toàn ngày",
+                    location: "Khu vực sáng tạo, FPT City",
+                    description: "Thử thách lập trình trong 48 giờ liên tục, cơ hội nhận giải thưởng giá trị và thực tập tại các công ty công nghệ.",
+                    participants: 300,
+                    status: "sắp diễn ra"
+                }
+            ],
+            
+            forumPosts: [
+                {
+                    id: 1,
+                    author: "Nguyễn Văn A",
+                    time: "2 giờ trước",
+                    title: "Cần tìm nhóm học môn Lập trình hướng đối tượng",
+                    content: "Mình là sinh viên K17 ngành CNTT, đang cần tìm nhóm 4-5 bạn để cùng học và làm project môn Lập trình hướng đối tượng. Ai có nhu cầu thì liên hệ mình nhé!",
+                    likes: 15,
+                    comments: 8,
+                    category: "study"
+                },
+                {
+                    id: 2,
+                    author: "Trần Thị B",
+                    time: "5 giờ trước",
+                    title: "Kinh nghiệm học Tiếng Anh tại FPT",
+                    content: "Chia sẻ với các tân sinh viên về kinh nghiệm học tiếng Anh tại FPT, cách vượt qua các kỳ thi và đạt chuẩn đầu ra. Mình đã đạt IELTS 7.5 sau 2 năm học.",
+                    likes: 42,
+                    comments: 23,
+                    category: "share"
+                },
+                {
+                    id: 3,
+                    author: "Lê Văn C",
+                    time: "1 ngày trước",
+                    title: "Câu hỏi về môn Cấu trúc dữ liệu và giải thuật",
+                    content: "Mình đang gặp khó khăn với phần thuật toán sắp xếp trong môn Cấu trúc dữ liệu. Có ai có tài liệu hay kinh nghiệm gì chia sẻ không?",
+                    likes: 8,
+                    comments: 12,
+                    category: "question"
+                },
+                {
+                    id: 4,
+                    author: "Phạm Thị D",
+                    time: "2 ngày trước",
+                    title: "Review trải nghiệm học online tại FPT",
+                    content: "Sau một học kỳ học online, mình muốn chia sẻ một số kinh nghiệm để học hiệu quả trong môi trường này. Đặc biệt là cách tương tác với giảng viên và bạn học.",
+                    likes: 31,
+                    comments: 17,
+                    category: "share"
+                }
+            ],
+            
+            dailyQuiz: {
+                title: "Quiz hôm nay: Kiến thức về FPT University",
+                questions: [
+                    {
+                        id: 1,
+                        question: "Đại học FPT Đà Nẵng được thành lập vào năm nào?",
+                        options: [
+                            "2006",
+                            "2008",
+                            "2010",
+                            "2012"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        id: 2,
+                        question: "Màu sắc chính thức của Đại học FPT là gì?",
+                        options: [
+                            "Xanh lá và Cam",
+                            "Xanh dương và Trắng",
+                            "Đỏ và Vàng",
+                            "Tím và Xanh"
+                        ],
+                        correctAnswer: 0
+                    },
+                    {
+                        id: 3,
+                        question: "Chuẩn đầu ra tiếng Anh bắt buộc đối với sinh viên FPT là gì?",
+                        options: [
+                            "TOEIC 600",
+                            "IELTS 6.0",
+                            "TOEFL 500",
+                            "Không có chuẩn bắt buộc"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        id: 4,
+                        question: "Mô hình đào tạo của Đại học FPT là gì?",
+                        options: [
+                            "Đào tạo theo tín chỉ",
+                            "Đào tạo theo niên chế",
+                            "Kết hợp tín chỉ và dự án",
+                            "Đào tạo từ xa"
+                        ],
+                        correctAnswer: 0
+                    },
+                    {
+                        id: 5,
+                        question: "Thời gian thực tập (OJT) bắt buộc tại FPT là bao lâu?",
+                        options: [
+                            "4 tháng",
+                            "6 tháng",
+                            "8 tháng",
+                            "1 năm"
+                        ],
+                        correctAnswer: 2
+                    }
+                ]
+            },
+            
+            rankings: {
+                weekly: [
+                    { rank: 1, name: "Nguyễn Văn A", points: 1250, faculty: "Công nghệ thông tin" },
+                    { rank: 2, name: "Trần Thị B", points: 1180, faculty: "Kinh tế" },
+                    { rank: 3, name: "Lê Văn C", points: 1120, faculty: "Ngôn ngữ Anh" },
+                    { rank: 4, name: "Phạm Thị D", points: 1050, faculty: "Quản trị kinh doanh" },
+                    { rank: 5, name: "Hoàng Văn E", points: 980, faculty: "Digital Marketing" },
+                    { rank: 6, name: "Đỗ Thị F", points: 920, faculty: "Thiết kế đồ họa" },
+                    { rank: 7, name: "Vũ Văn G", points: 870, faculty: "Công nghệ thông tin" },
+                    { rank: 8, name: "Bùi Thị H", points: 820, faculty: "Kinh tế" },
+                    { rank: 9, name: "Đinh Văn I", points: 790, faculty: "Ngôn ngữ Anh" },
+                    { rank: 10, name: "Ngô Thị K", points: 750, faculty: "Quản trị kinh doanh" }
+                ],
+                monthly: [
+                    { rank: 1, name: "Trần Thị B", points: 4850, faculty: "Kinh tế" },
+                    { rank: 2, name: "Nguyễn Văn A", points: 4720, faculty: "Công nghệ thông tin" },
+                    { rank: 3, name: "Lê Văn C", points: 4550, faculty: "Ngôn ngữ Anh" },
+                    { rank: 4, name: "Phạm Thị D", points: 4320, faculty: "Quản trị kinh doanh" },
+                    { rank: 5, name: "Hoàng Văn E", points: 4150, faculty: "Digital Marketing" },
+                    { rank: 6, name: "Đỗ Thị F", points: 3980, faculty: "Thiết kế đồ họa" },
+                    { rank: 7, name: "Vũ Văn G", points: 3850, faculty: "Công nghệ thông tin" },
+                    { rank: 8, name: "Bùi Thị H", points: 3720, faculty: "Kinh tế" },
+                    { rank: 9, name: "Đinh Văn I", points: 3650, faculty: "Ngôn ngữ Anh" },
+                    { rank: 10, name: "Ngô Thị K", points: 3520, faculty: "Quản trị kinh doanh" }
+                ]
+            },
+            
+            quizHistory: [
+                { date: "25/10/2023", topic: "Kỹ năng học tập", score: "8/10", points: 80 },
+                { date: "24/10/2023", topic: "Quản lý thời gian", score: "7/10", points: 70 },
+                { date: "23/10/2023", topic: "Làm việc nhóm", score: "9/10", points: 90 },
+                { date: "22/10/2023", topic: "Kỹ năng thuyết trình", score: "6/10", points: 60 },
+                { date: "21/10/2023", topic: "Kiến thức FPT", score: "8/10", points: 80 }
+            ]
+        };
+
+        // Khởi tạo ứng dụng khi DOM đã tải xong
+        document.addEventListener('DOMContentLoaded', function() {
+            // Khởi tạo các biến toàn cục
+            let currentUser = null;
+            let currentQuizAnswers = {};
+            let isLoginMode = false;
+            
+            // Khởi tạo Toastr
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            
+            // Tạo nội dung HTML cho thẻ bài viết/video/quiz
+            function createContentCard(content) {
+                const icon = content.type === 'video' ? 'fa-play-circle' : 
+                            content.type === 'quiz' ? 'fa-question-circle' : 'fa-file-alt';
+                
+                return `
+                    <div class="feature-card" data-id="${content.id}">
+                        <div class="feature-image">
+                            <img src="${content.image}" alt="${content.title}">
+                        </div>
+                        <div class="feature-content">
+                            <h3>${content.title}</h3>
+                            <p>${content.description}</p>
+                            <div class="meta">
+                                <span><i class="far ${icon}"></i> ${content.readTime}</span>
+                                <span><i class="far fa-calendar"></i> ${content.date}</span>
+                                ${content.category ? `<span><i class="fas fa-tag"></i> ${content.category}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Tạo nội dung HTML cho hoạt động
+            function createActivityCard(activity) {
+                const statusClass = activity.status === 'sắp diễn ra' ? 'btn-primary' : 'btn-outline';
+                const statusText = activity.status === 'sắp diễn ra' ? 'Sắp diễn ra' : 'Đã diễn ra';
+                
+                return `
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3>${activity.title}</h3>
+                            <div class="activity-date">${activity.date} | ${activity.time}</div>
+                        </div>
+                        <div class="activity-body">
+                            <p>${activity.description}</p>
+                            <div class="activity-details">
+                                <div class="activity-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>${activity.location}</span>
+                                </div>
+                                <div class="activity-detail">
+                                    <i class="fas fa-users"></i>
+                                    <span>${activity.participants} người tham gia</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding: 0 25px 25px;">
+                            <button class="btn ${statusClass} register-activity" data-id="${activity.id}">${statusText}</button>
+                            ${activity.status === 'sắp diễn ra' ? '<button class="btn btn-outline" style="margin-left: 10px;">Chi tiết</button>' : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Tạo nội dung HTML cho bài viết diễn đàn
+            function createForumPost(post) {
+                const categoryIcons = {
+                    'study': 'fa-book',
+                    'activity': 'fa-calendar-alt',
+                    'question': 'fa-question-circle',
+                    'share': 'fa-share-alt',
+                    'other': 'fa-comment'
+                };
+                
+                const categoryLabels = {
+                    'study': 'Học tập',
+                    'activity': 'Hoạt động',
+                    'question': 'Hỏi đáp',
+                    'share': 'Chia sẻ',
+                    'other': 'Khác'
+                };
+                
+                return `
+                    <div class="forum-post">
+                        <div class="post-header">
+                            <div>
+                                <span class="post-author">${post.author}</span>
+                                <span style="margin: 0 10px;">•</span>
+                                <span><i class="fas ${categoryIcons[post.category]}"></i> ${categoryLabels[post.category]}</span>
+                            </div>
+                            <span class="post-time">${post.time}</span>
+                        </div>
+                        <div class="post-content">
+                            <h4 style="margin-bottom: 10px;">${post.title}</h4>
+                            <p>${post.content}</p>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action like-post" data-id="${post.id}">
+                                <i class="far fa-thumbs-up"></i>
+                                <span>${post.likes}</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-comment"></i>
+                                <span>${post.comments}</span>
+                            </div>
+                            <div class="post-action">
+                                <i class="far fa-share-square"></i>
+                                <span>Chia sẻ</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Hiển thị nội dung nổi bật
+            function renderFeaturedContent() {
+                const container = document.getElementById('featured-content');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                sampleData.featuredContent.forEach(content => {
+                    container.innerHTML += createContentCard(content);
+                });
+                
+                // Thêm sự kiện click cho các thẻ
+                document.querySelectorAll('.feature-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const content = sampleData.featuredContent.find(item => item.id == id) || 
+                                       sampleData.knowledgeContent.find(item => item.id == id);
+                        
+                        if (content) {
+                            if (content.type === 'quiz') {
+                                openQuizModal();
+                            } else {
+                                toastr.info(`Đang mở ${content.type === 'video' ? 'video' : 'bài viết'}: "${content.title}"`);
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // Hiển thị nội dung kiến thức
+            function renderKnowledgeContent() {
+                const container = document.getElementById('knowledge-content');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                sampleData.knowledgeContent.forEach(content => {
+                    container.innerHTML += createContentCard(content);
+                });
+                
+                // Thêm sự kiện click cho các thẻ
+                document.querySelectorAll('#knowledge-content .feature-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const content = sampleData.knowledgeContent.find(item => item.id == id);
+                        
+                        if (content) {
+                            toastr.info(`Đang mở ${content.type === 'video' ? 'video' : 'bài viết'}: "${content.title}"`);
+                        }
+                    });
+                });
+            }
+            
+            // Hiển thị hoạt động
+            function renderActivities() {
+                const container = document.getElementById('activities-content');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                sampleData.activitiesContent.forEach(activity => {
+                    container.innerHTML += createActivityCard(activity);
+                });
+                
+                // Thêm sự kiện đăng ký hoạt động
+                document.querySelectorAll('.register-activity').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const activity = sampleData.activitiesContent.find(item => item.id == id);
+                        
+                        if (activity) {
+                            if (currentUser) {
+                                toastr.success(`Bạn đã đăng ký tham gia "${activity.title}" thành công!`);
+                                this.textContent = "Đã đăng ký";
+                                this.classList.remove('btn-primary');
+                                this.classList.add('btn-outline');
+                                this.disabled = true;
+                            } else {
+                                toastr.warning("Vui lòng đăng nhập để đăng ký tham gia hoạt động!");
+                                openAuthModal(false);
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // Hiển thị bài viết diễn đàn
+            function renderForumPosts() {
+                const container = document.getElementById('forum-posts-content');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                sampleData.forumPosts.forEach(post => {
+                    container.innerHTML += createForumPost(post);
+                });
+                
+                // Thêm sự kiện like bài viết
+                document.querySelectorAll('.like-post').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const post = sampleData.forumPosts.find(item => item.id == id);
+                        
+                        if (post) {
+                            if (currentUser) {
+                                const likeCount = this.querySelector('span');
+                                const currentLikes = parseInt(likeCount.textContent);
+                                likeCount.textContent = currentLikes + 1;
+                                
+                                const icon = this.querySelector('i');
+                                icon.classList.remove('far');
+                                icon.classList.add('fas');
+                                icon.style.color = 'var(--primary-color)';
+                                
+                                toastr.success("Bạn đã thích bài viết này!");
+                            } else {
+                                toastr.warning("Vui lòng đăng nhập để tương tác với bài viết!");
+                                openAuthModal(false);
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // Hiển thị bảng xếp hạng
+            function renderRankings(type = 'weekly') {
+                const container = document.getElementById('ranking-content');
+                if (!container) return;
+                
+                const rankings = type === 'weekly' ? sampleData.rankings.weekly : sampleData.rankings.monthly;
+                
+                let html = `
+                    <table class="ranking-table">
+                        <thead>
+                            <tr>
+                                <th class="rank">Hạng</th>
+                                <th>Tên sinh viên</th>
+                                <th>Khoa</th>
+                                <th>Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                rankings.forEach(item => {
+                    html += `
+                        <tr>
+                            <td class="rank rank-${item.rank}">${item.rank}</td>
+                            <td>${item.name}</td>
+                            <td>${item.faculty}</td>
+                            <td>${item.points.toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+                
+                // Cập nhật trạng thái nút
+                document.getElementById('weeklyRankingBtn').className = type === 'weekly' ? 'btn btn-primary' : 'btn btn-outline';
+                document.getElementById('monthlyRankingBtn').className = type === 'monthly' ? 'btn btn-primary' : 'btn btn-outline';
+            }
+            
+            // Hiển thị lịch sử quiz
+            function renderQuizHistory() {
+                const container = document.getElementById('quiz-history');
+                if (!container) return;
+                
+                if (sampleData.quizHistory.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; padding: 40px; background-color: white; border-radius: var(--border-radius);">Bạn chưa tham gia quiz nào. Hãy bắt đầu ngay!</p>';
+                    return;
+                }
+                
+                let html = `
+                    <table class="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Chủ đề</th>
+                                <th>Điểm</th>
+                                <th>Điểm hoạt động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                sampleData.quizHistory.forEach(item => {
+                    html += `
+                        <tr>
+                            <td>${item.date}</td>
+                            <td>${item.topic}</td>
+                            <td>${item.score}</td>
+                            <td>${item.points}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `</tbody></table>`;
+                container.innerHTML = html;
+            }
+            
+            // Hiển thị câu hỏi quiz
+            function renderQuizQuestions() {
+                const container = document.getElementById('quizQuestions');
+                if (!container) return;
+                
+                let html = '<h2>' + sampleData.dailyQuiz.title + '</h2>';
+                
+                sampleData.dailyQuiz.questions.forEach((q, index) => {
+                    html += `
+                        <div class="quiz-question" data-id="${q.id}">
+                            <h3>Câu ${index + 1}: ${q.question}</h3>
+                            <div class="quiz-options">
+                    `;
+                    
+                    q.options.forEach((option, optIndex) => {
+                        html += `
+                            <div class="quiz-option" data-question="${q.id}" data-answer="${optIndex}">
+                                ${option}
+                            </div>
+                        `;
+                    });
+                    
+                    html += `</div></div>`;
+                });
+                
+                container.innerHTML = html;
+                
+                // Thêm sự kiện chọn đáp án
+                document.querySelectorAll('.quiz-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const questionId = this.getAttribute('data-question');
+                        const answerId = this.getAttribute('data-answer');
+                        
+                        // Xóa selected class từ tất cả các option cùng câu hỏi
+                        document.querySelectorAll(`.quiz-option[data-question="${questionId}"]`).forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Thêm selected class cho option được chọn
+                        this.classList.add('selected');
+                        
+                        // Lưu câu trả lời
+                        currentQuizAnswers[questionId] = parseInt(answerId);
+                        
+                        // Hiển thị nút nộp bài nếu đã trả lời tất cả câu hỏi
+                        const totalQuestions = sampleData.dailyQuiz.questions.length;
+                        if (Object.keys(currentQuizAnswers).length === totalQuestions) {
+                            document.getElementById('submitQuizBtn').style.display = 'inline-block';
+                        }
+                    });
+                });
+                
+                // Hiển thị nút nộp bài
+                document.getElementById('submitQuizBtn').style.display = 'none';
+                document.getElementById('closeQuizResultBtn').style.display = 'none';
+                document.getElementById('quizResult').style.display = 'none';
+                document.getElementById('quizQuestions').style.display = 'block';
+            }
+            
+            // Tính điểm quiz
+            function calculateQuizScore() {
+                let score = 0;
+                const totalQuestions = sampleData.dailyQuiz.questions.length;
+                
+                sampleData.dailyQuiz.questions.forEach(q => {
+                    if (currentQuizAnswers[q.id] === q.correctAnswer) {
+                        score++;
+                    }
+                });
+                
+                return {
+                    score: score,
+                    total: totalQuestions,
+                    percentage: Math.round((score / totalQuestions) * 100)
+                };
+            }
+            
+            // Hiển thị kết quả quiz
+            function showQuizResult() {
+                const result = calculateQuizScore();
+                const container = document.getElementById('quizResult');
+                
+                let html = `
+                    <div class="quiz-result">
+                        <h2>Kết quả quiz của bạn</h2>
+                        <div class="quiz-score">${result.score}/${result.total}</div>
+                        <p>Bạn đã trả lời đúng ${result.score} trên tổng số ${result.total} câu hỏi.</p>
+                        <p>Tỷ lệ đúng: <strong>${result.percentage}%</strong></p>
+                        <p>Điểm hoạt động nhận được: <strong>${result.score * 10}</strong> điểm</p>
+                `;
+                
+                // Hiển thị chi tiết từng câu
+                html += `<div class="quiz-result-details">`;
+                sampleData.dailyQuiz.questions.forEach((q, index) => {
+                    const isCorrect = currentQuizAnswers[q.id] === q.correctAnswer;
+                    const userAnswer = currentQuizAnswers[q.id] !== undefined ? q.options[currentQuizAnswers[q.id]] : "Chưa trả lời";
+                    const correctAnswer = q.options[q.correctAnswer];
+                    
+                    html += `
+                        <div style="margin-bottom: 15px; padding: 10px; border-left: 4px solid ${isCorrect ? '#4CAF50' : '#F44336'}; background-color: #f9f9f9;">
+                            <p><strong>Câu ${index + 1}:</strong> ${q.question}</p>
+                            <p>Đáp án của bạn: <span style="color: ${isCorrect ? '#4CAF50' : '#F44336'}">${userAnswer}</span></p>
+                            ${!isCorrect ? `<p>Đáp án đúng: <span style="color: #4CAF50">${correctAnswer}</span></p>` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += `</div></div>`;
+                container.innerHTML = html;
+                
+                // Hiển thị kết quả, ẩn câu hỏi
+                document.getElementById('quizQuestions').style.display = 'none';
+                container.style.display = 'block';
+                document.getElementById('submitQuizBtn').style.display = 'none';
+                document.getElementById('closeQuizResultBtn').style.display = 'inline-block';
+                
+                // Cập nhật thống kê
+                if (result.score > 0) {
+                    const currentCompleted = parseInt(document.getElementById('quizCompleted').textContent);
+                    document.getElementById('quizCompleted').textContent = currentCompleted + 1;
+                    
+                    const currentPercentage = Math.min(100, Math.floor((currentCompleted + 1) / 2847 * 100));
+                    document.getElementById('quizPercentage').textContent = `${currentPercentage}% sinh viên`;
+                    document.getElementById('quizPercentage2').textContent = `${currentPercentage}% sinh viên`;
+                    
+                    // Cập nhật thanh tiến trình
+                    document.getElementById('quizProgressBar').style.width = `${currentPercentage}%`;
+                    document.getElementById('quizProgressBar2').style.width = `${currentPercentage}%`;
+                    
+                    // Thêm vào lịch sử quiz
+                    const today = new Date();
+                    const dateStr = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+                    
+                    sampleData.quizHistory.unshift({
+                        date: dateStr,
+                        topic: sampleData.dailyQuiz.title.split(": ")[1] || "Kiến thức FPT",
+                        score: `${result.score}/${result.total}`,
+                        points: result.score * 10
+                    });
+                    
+                    // Giới hạn lịch sử chỉ 10 mục
+                    if (sampleData.quizHistory.length > 10) {
+                        sampleData.quizHistory = sampleData.quizHistory.slice(0, 10);
+                    }
+                    
+                    toastr.success(`Chúc mừng! Bạn đã hoàn thành quiz và nhận được ${result.score * 10} điểm hoạt động!`);
+                } else {
+                    toastr.warning("Bạn chưa trả lời đúng câu nào. Hãy thử lại nhé!");
+                }
+            }
+            
+            // Hiệu ứng thống kê đếm số
+            function animateCounter(elementId, targetValue, duration = 2000) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+                
+                let startValue = 0;
+                const increment = targetValue / (duration / 16); // 60fps
+                let currentValue = startValue;
+                
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= targetValue) {
+                        currentValue = targetValue;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(currentValue);
+                }, 16);
+            }
+            
+            // Mở modal đăng ký/đăng nhập
+            function openAuthModal(isLogin = false) {
+                isLoginMode = isLogin;
+                const modal = document.getElementById('authModal');
+                const title = document.getElementById('modalTitle');
+                const submitBtn = document.getElementById('authSubmitBtn');
+                const switchLink = document.getElementById('switchAuthMode');
+                const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+                
+                if (isLogin) {
+                    title.textContent = "Đăng nhập";
+                    submitBtn.textContent = "Đăng nhập";
+                    switchLink.textContent = "Chưa có tài khoản? Đăng ký ngay";
+                    confirmPasswordGroup.style.display = "none";
+                } else {
+                    title.textContent = "Đăng ký tài khoản";
+                    submitBtn.textContent = "Đăng ký";
+                    switchLink.textContent = "Đã có tài khoản? Đăng nhập ngay";
+                    confirmPasswordGroup.style.display = "block";
+                }
+                
+                modal.style.display = "flex";
+            }
+            
+            // Đóng modal
+            function closeAuthModal() {
+                document.getElementById('authModal').style.display = "none";
+                document.getElementById('authForm').reset();
+            }
+            
+            // Mở modal quiz
+            function openQuizModal() {
+                currentQuizAnswers = {};
+                renderQuizQuestions();
+                document.getElementById('quizModal').style.display = "flex";
+            }
+            
+            // Đóng modal quiz
+            function closeQuizModal() {
+                document.getElementById('quizModal').style.display = "none";
+            }
+            
+            // Mở modal tạo bài viết
+            function openCreatePostModal() {
+                if (!currentUser) {
+                    toastr.warning("Vui lòng đăng nhập để tạo bài viết mới!");
+                    openAuthModal(false);
+                    return;
+                }
+                
+                document.getElementById('createPostModal').style.display = "flex";
+            }
+            
+            // Đóng modal tạo bài viết
+            function closeCreatePostModal() {
+                document.getElementById('createPostModal').style.display = "none";
+                document.getElementById('postForm').reset();
+            }
+            
+            // Xử lý đăng ký/đăng nhập
+            function handleAuth(event) {
+                event.preventDefault();
+                
+                const userType = document.getElementById('userType').value;
+                const fullName = document.getElementById('fullName').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (!isLoginMode) {
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (password !== confirmPassword) {
+                        toastr.error("Mật khẩu xác nhận không khớp!");
+                        return;
+                    }
+                    
+                    if (password.length < 6) {
+                        toastr.error("Mật khẩu phải có ít nhất 6 ký tự!");
+                        return;
+                    }
+                    
+                    // Kiểm tra email FPT
+                    if (!email.includes('@fpt.edu.vn') && !email.includes('@fe.edu.vn')) {
+                        toastr.warning("Vui lòng sử dụng email FPT (@fpt.edu.vn hoặc @fe.edu.vn)!");
+                        return;
+                    }
+                }
+                
+                // Giả lập xử lý đăng ký/đăng nhập
+                if (isLoginMode) {
+                    // Giả lập đăng nhập
+                    currentUser = {
+                        name: fullName,
+                        email: email,
+                        type: userType
+                    };
+                    
+                    toastr.success(`Chào mừng ${fullName} trở lại StudyTogether!`);
+                    closeAuthModal();
+                    
+                    // Cập nhật giao diện khi đã đăng nhập
+                    document.getElementById('loginBtn').style.display = 'none';
+                    document.getElementById('registerBtn').textContent = `Xin chào, ${fullName.split(' ')[0]}`;
+                    document.getElementById('registerBtn').classList.remove('btn-primary');
+                    document.getElementById('registerBtn').classList.add('btn-outline');
+                } else {
+                    // Giả lập đăng ký
+                    currentUser = {
+                        name: fullName,
+                        email: email,
+                        type: userType
+                    };
+                    
+                    toastr.success(`Đăng ký thành công! Chào mừng ${fullName} đến với StudyTogether - FPT Đà Nẵng!`);
+                    closeAuthModal();
+                    
+                    // Cập nhật thống kê
+                    const currentStudents = parseInt(document.getElementById('studentCount').textContent);
+                    document.getElementById('studentCount').textContent = currentStudents + 1;
+                    
+                    // Cập nhật giao diện khi đã đăng nhập
+                    document.getElementById('loginBtn').style.display = 'none';
+                    document.getElementById('registerBtn').textContent = `Xin chào, ${fullName.split(' ')[0]}`;
+                    document.getElementById('registerBtn').classList.remove('btn-primary');
+                    document.getElementById('registerBtn').classList.add('btn-outline');
+                }
+            }
+            
+            // Xử lý tạo bài viết mới
+            function handleCreatePost(event) {
+                event.preventDefault();
+                
+                const title = document.getElementById('postTitle').value;
+                const category = document.getElementById('postCategory').value;
+                const content = document.getElementById('postContent').value;
+                
+                // Tạo bài viết mới
+                const newPost = {
+                    id: sampleData.forumPosts.length + 1,
+                    author: currentUser.name,
+                    time: "Vừa xong",
+                    title: title,
+                    content: content,
+                    likes: 0,
+                    comments: 0,
+                    category: category
+                };
+                
+                // Thêm vào đầu danh sách
+                sampleData.forumPosts.unshift(newPost);
+                
+                // Hiển thị lại danh sách bài viết
+                renderForumPosts();
+                
+                // Đóng modal
+                closeCreatePostModal();
+                
+                toastr.success("Bài viết của bạn đã được đăng thành công!");
+            }
+            
+            // Chuyển đổi giữa các phần của website
+            function switchSection(sectionId) {
+                // Ẩn tất cả các phần
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.add('hidden-section');
+                });
+                
+                // Hiển thị phần được chọn
+                document.getElementById(sectionId).classList.remove('hidden-section');
+                
+                // Cập nhật menu điều hướng
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                document.querySelector(`.nav-link[data-section="${sectionId.replace('-section', '')}"]`).classList.add('active');
+                
+                // Cuộn lên đầu trang
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Tải nội dung cho phần được chọn
+                switch(sectionId) {
+                    case 'knowledge-section':
+                        renderKnowledgeContent();
+                        break;
+                    case 'quiz-section':
+                        renderQuizHistory();
+                        break;
+                    case 'activities-section':
+                        renderActivities();
+                        break;
+                    case 'community-section':
+                        renderForumPosts();
+                        break;
+                    case 'ranking-section':
+                        renderRankings('weekly');
+                        break;
+                }
+            }
+            
+            // Khởi tạo hiệu ứng khi cuộn trang
+            function initScrollEffects() {
+                // Hiệu ứng cho header khi cuộn
+                window.addEventListener('scroll', function() {
+                    const header = document.querySelector('header');
+                    if (window.scrollY > 100) {
+                        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                        header.style.padding = '5px 0';
+                    } else {
+                        header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.08)';
+                        header.style.padding = '15px 0';
+                    }
+                });
+                
+                // Hiệu ứng xuất hiện khi cuộn
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+                
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, observerOptions);
+                
+                // Áp dụng hiệu ứng cho các phần tử
+                const featureCards = document.querySelectorAll('.feature-card');
+                const quizToday = document.querySelector('.quiz-today');
+                const statItems = document.querySelectorAll('.stat-item');
+                const activityCards = document.querySelectorAll('.activity-card');
+                const communityCards = document.querySelectorAll('.community-card');
+                
+                featureCards.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    observer.observe(card);
+                });
+                
+                if (quizToday) {
+                    quizToday.style.opacity = '0';
+                    quizToday.style.transform = 'translateY(20px)';
+                    quizToday.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    observer.observe(quizToday);
+                }
+                
+                statItems.forEach(item => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    observer.observe(item);
+                });
+                
+                activityCards.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    observer.observe(card);
+                });
+                
+                communityCards.forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    observer.observe(card);
+                });
+            }
+            
+            // Khởi tạo các sự kiện
+            function initEventListeners() {
+                // Sự kiện cho nút đăng nhập/đăng ký
+                document.getElementById('loginBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openAuthModal(true);
+                });
+                
+                document.getElementById('registerBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentUser) {
+                        // Nếu đã đăng nhập, hiển thị menu người dùng
+                        toastr.info("Menu người dùng đang được phát triển!");
+                    } else {
+                        openAuthModal(false);
+                    }
+                });
+                
+                // Sự kiện cho modal auth
+                document.getElementById('closeAuthModal').addEventListener('click', closeAuthModal);
+                document.getElementById('authForm').addEventListener('submit', handleAuth);
+                document.getElementById('switchAuthMode').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openAuthModal(!isLoginMode);
+                });
+                
+                // Sự kiện cho modal quiz
+                document.getElementById('closeQuizModal').addEventListener('click', closeQuizModal);
+                document.getElementById('submitQuizBtn').addEventListener('click', showQuizResult);
+                document.getElementById('closeQuizResultBtn').addEventListener('click', closeQuizModal);
+                
+                // Sự kiện cho modal tạo bài viết
+                document.getElementById('closePostModal').addEventListener('click', closeCreatePostModal);
+                document.getElementById('postForm').addEventListener('submit', handleCreatePost);
+                
+                // Sự kiện cho các nút quiz
+                document.getElementById('dailyQuizBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openQuizModal();
+                });
+                
+                document.getElementById('takeQuizBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openQuizModal();
+                });
+                
+                document.getElementById('takeQuizBtn2').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openQuizModal();
+                });
+                
+                document.getElementById('startNowBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toastr.info("Bắt đầu hành trình của bạn với StudyTogether - FPT Đà Nẵng! Hãy khám phá các nội dung trên website.");
+                });
+                
+                // Sự kiện cho phần cộng đồng
+                document.getElementById('joinForumBtn').addEventListener('click', function() {
+                    switchSection('community-section');
+                });
+                
+                document.getElementById('findGroupBtn').addEventListener('click', function() {
+                    toastr.info("Tính năng tìm nhóm học tập đang được phát triển!");
+                });
+                
+                document.getElementById('askQuestionBtn').addEventListener('click', function() {
+                    if (currentUser) {
+                        openCreatePostModal();
+                    } else {
+                        toastr.warning("Vui lòng đăng nhập để đặt câu hỏi!");
+                        openAuthModal(false);
+                    }
+                });
+                
+                document.getElementById('createPostBtn').addEventListener('click', function() {
+                    openCreatePostModal();
+                });
+                
+                // Sự kiện cho phần hoạt động
+                document.getElementById('loadMoreActivities').addEventListener('click', function() {
+                    toastr.info("Đang tải thêm hoạt động...");
+                    // Trong thực tế, đây sẽ là nơi gọi API để tải thêm dữ liệu
+                });
+                
+                // Sự kiện cho menu điều hướng
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = this.getAttribute('data-section');
+                        switchSection(section + '-section');
+                    });
+                });
+                
+                // Sự kiện cho footer navigation
+                document.querySelectorAll('.footer-nav').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = this.getAttribute('data-section');
+                        switchSection(section + '-section');
+                    });
+                });
+                
+                // Sự kiện cho bảng xếp hạng
+                document.getElementById('weeklyRankingBtn').addEventListener('click', function() {
+                    renderRankings('weekly');
+                });
+                
+                document.getElementById('monthlyRankingBtn').addEventListener('click', function() {
+                    renderRankings('monthly');
+                });
+                
+                // Đóng modal khi click bên ngoài
+                window.addEventListener('click', function(e) {
+                    const authModal = document.getElementById('authModal');
+                    const quizModal = document.getElementById('quizModal');
+                    const postModal = document.getElementById('createPostModal');
+                    
+                    if (e.target === authModal) {
+                        closeAuthModal();
+                    }
+                    
+                    if (e.target === quizModal) {
+                        closeQuizModal();
+                    }
+                    
+                    if (e.target === postModal) {
+                        closeCreatePostModal();
+                    }
+                });
+            }
+            
+            // Khởi tạo ứng dụng
+            function initApp() {
+                // Hiển thị nội dung ban đầu
+                renderFeaturedContent();
+                renderRankings('weekly');
+                renderActivities();
+                renderForumPosts();
+                
+                // Khởi động thống kê đếm số
+                setTimeout(() => {
+                    animateCounter('studentCount', 1847);
+                    animateCounter('quizCompleted', 256);
+                    animateCounter('upcomingEvents', 4);
+                    
+                    // Cập nhật thanh tiến trình quiz
+                    const quizPercentage = Math.floor(256 / 1847 * 100);
+                    document.getElementById('quizProgressBar').style.width = `${quizPercentage}%`;
+                    document.getElementById('quizProgressBar2').style.width = `${quizPercentage}%`;
+                    document.getElementById('quizPercentage').textContent = `${quizPercentage}% sinh viên`;
+                    document.getElementById('quizPercentage2').textContent = `${quizPercentage}% sinh viên`;
+                }, 500);
+                
+                // Khởi tạo hiệu ứng cuộn
+                initScrollEffects();
+                
+                // Khởi tạo các sự kiện
+                initEventListeners();
+                
+                // Hiển thị thông báo chào mừng
+                setTimeout(() => {
+                    toastr.info("Chào mừng bạn đến với StudyTogether - Đồng hành cùng tân sinh viên FPT Đà Nẵng!");
+                }, 1000);
+            }
+            
+            // Chạy ứng dụng
+            initApp();
+        });
+    </script>
+</body>
+</html>
