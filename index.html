@@ -246,7 +246,7 @@
                 </div>
                 <div class="form-group" id="confirmPasswordGroup">
                     <label for="confirmPassword">Xác nhận mật khẩu:</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
                 </div>
                 <button type="submit" class="btn btn-primary" id="authSubmitBtn">Đăng ký</button>
                 <p style="margin-top: 15px; text-align: center;">
@@ -352,13 +352,27 @@
             </div>
             
             <div class="copyright">
-                <p>&copy; 2023 StudyTogether - Đại học FPT Đà Nẵng. Tất cả các quyền được bảo lưu.</p>
+                <p>&copy; 2025 StudyTogether - Đại học FPT Đà Nẵng. Tất cả các quyền được bảo lưu.</p>
                 <p>Website được xây dựng nhằm hỗ trợ tân sinh viên FPT thích nghi với môi trường đại học.</p>
             </div>
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="module" src="js/modules/main.js"></script>
+    <!-- jQuery bắt buộc cho toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: "3000"
+    };
+</script>
+
+<script type="module" src="js/modules/main.js"></script>
 </body>
 </html>
