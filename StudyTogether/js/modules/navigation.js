@@ -1,0 +1,137 @@
+// navigation.js
+import {
+    renderKnowledgeContent,
+    renderQuizHistory,
+    renderActivities,
+    renderForumPosts,
+    renderRankings
+} from './ui.js';
+
+
+/* ==========================================
+   CHUYỂN SECTION
+========================================== */
+export function switchSection(sectionId) {
+
+    // 1️⃣ Ẩn tất cả section
+    const allSections = document.querySelectorAll('.content-section');
+    allSections.forEach(section => {
+        section.classList.add('hidden-section');
+    });
+
+    // 2️⃣ Hiển thị section được chọn
+    const activeSection = document.getElementById(sectionId);
+    if (!activeSection) {
+        console.warn("Section không tồn tại:", sectionId);
+        return;
+    }
+
+    activeSection.classList.remove('hidden-section');
+
+    // 3️⃣ Cập nhật menu active
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    const sectionName = sectionId.replace('-section', '');
+    const activeNav = document.querySelector(`.nav-link[data-section="${sectionName}"]`);
+
+    if (activeNav) {
+        activeNav.classList.add('active');
+    }
+
+    // 4️⃣ Scroll lên đầu
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+    // 5️⃣ Render nội dung theo section
+    renderSectionContent(sectionId);
+}
+
+
+/* ==========================================
+   RENDER NỘI DUNG TỪNG SECTION
+========================================== */
+function renderSectionContent(sectionId) {
+
+    switch (sectionId) {
+
+        case 'knowledge-section':
+            renderKnowledgeContent();
+            break;
+
+        case 'quiz-section':
+            renderQuizHistory();
+            break;
+
+        case 'activities-section':
+            renderActivities();
+            break;
+
+        case 'community-section':
+            renderForumPosts();
+            break;
+
+        case 'ranking-section':
+            renderRankings('weekly');
+            break;
+
+        case 'profile-section':
+            updateProfileUI();
+            break;
+
+        case 'home-section':
+        default:
+            // Không cần render lại
+            break;
+    }
+}
+
+
+/* ==========================================
+   CẬP NHẬT PROFILE UI
+========================================== */
+function updateProfileUI() {
+
+    const username = localStorage.getItem("username");
+    const email = localStorage.getItem("email");
+    const points = localStorage.getItem("points");
+
+    const usernameEl = document.getElementById("profileUsername");
+    const emailEl = document.getElementById("profileEmail");
+    const pointsEl = document.getElementById("profilePoints");
+
+    if (usernameEl) usernameEl.textContent = username || "---";
+    if (emailEl) emailEl.textContent = email || "Chưa cập nhật";
+    if (pointsEl) pointsEl.textContent = points || "0";
+}
+
+
+/* ==========================================
+   INIT NAVIGATION - PHẢI EXPORT HÀM NÀY
+========================================== */
+export function initNavigation() {
+
+    console.log("Initializing navigation..."); // Debug
+
+    const navLinks = document.querySelectorAll('[data-section]');
+
+    navLinks.forEach(link => {
+
+        link.addEventListener('click', function (e) {
+
+            e.preventDefault();
+
+            const sectionName = this.dataset.section;
+
+            if (!sectionName) return;
+
+            const sectionId = sectionName + '-section';
+
+            switchSection(sectionId);
+        });
+
+    });
+}

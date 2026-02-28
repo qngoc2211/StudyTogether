@@ -1,0 +1,86 @@
+/* Responsive */
+@media (max-width: 992px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-text {
+        order: 2;
+    }
+    
+    .hero-image {
+        order: 1;
+    }
+    
+    .quiz-today {
+        flex-direction: column;
+    }
+    
+    nav ul {
+        gap: 15px;
+    }
+    
+    .activities-grid,
+    .community-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .hero h1 {
+        font-size: 32px;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .modal-content {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-item {
+        min-width: 100%;
+    }
+    
+    .ranking-table {
+        font-size: 14px;
+    }
+    
+    .ranking-table th,
+    .ranking-table td {
+        padding: 10px 5px;
+    }
+    
+    .post-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

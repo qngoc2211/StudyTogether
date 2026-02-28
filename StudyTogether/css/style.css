@@ -1,0 +1,444 @@
+/* Reset và biến màu sắc */
+@import url('components/header.css');
+@import url('components/footer.css');
+@import url('components/modal.css');
+@import url('components/cards.css');
+@import url('components/quiz.css');
+/* Import các component bổ sung */
+@import url('components/user-menu.css');
+@import url('components/quiz-modal.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #FF6B35; /* Cam chủ đạo */
+    --primary-dark: #E55A2B;
+    --secondary-color: #4ECDC4; /* Xanh phụ */
+    --light-color: #FFFFFF;
+    --dark-color: #292F36;
+    --gray-color: #F7F7F7;
+    --text-color: #333333;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+    --fpt-green: #009247; /* Màu xanh FPT */
+    --fpt-blue: #0056B3; /* Màu xanh dương FPT */
+}
+
+body {
+    background-color: var(--gray-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Các phần ẩn ban đầu */
+.hidden-section {
+    display: none !important;
+}
+
+/* Nút cơ bản */
+.btn {
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 107, 53, 0.3);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 107, 53, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-fpt {
+    background-color: var(--fpt-green);
+    color: white;
+}
+
+.btn-fpt:hover {
+    background-color: #007a3d;
+    transform: translateY(-2px);
+}
+
+/* Tiêu đề section */
+.section-title {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 50px;
+    color: var(--dark-color);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.section-title.fpt::after {
+    background-color: var(--fpt-green);
+}
+
+/* Hero banner */
+.hero {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 146, 71, 0.1) 100%);
+    padding: 80px 0;
+    margin-bottom: 60px;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+    line-height: 1.2;
+}
+
+.hero h1 span {
+    color: var(--fpt-green);
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+/* Thống kê nhanh */
+.stats {
+    background-color: var(--light-color);
+    padding: 60px 0;
+    margin-bottom: 80px;
+    box-shadow: var(--shadow);
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.stat-text {
+    font-size: 18px;
+    color: var(--dark-color);
+}
+
+/* Bảng xếp hạng */
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.ranking-table th {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    font-weight: 600;
+}
+
+.ranking-table tr:hover {
+    background-color: rgba(255, 107, 53, 0.05);
+}
+
+.ranking-table .rank {
+    font-weight: 700;
+    width: 60px;
+    text-align: center;
+}
+
+.ranking-table .rank-1 {
+    color: #FFD700;
+}
+
+.ranking-table .rank-2 {
+    color: #C0C0C0;
+}
+
+.ranking-table .rank-3 {
+    color: #CD7F32;
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Auth Buttons - Giữ lại vì đây là style chung cho nút đăng nhập/đăng ký */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.auth-buttons .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+/* Header container */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--dark-color);
+}
+
+.logo i {
+    color: var(--primary-color);
+    font-size: 28px;
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+/* Navigation */
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--dark-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+nav ul li a.active {
+    color: var(--primary-color);
+}
+
+nav ul li a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+/* Animation chung */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive cơ bản */
+@media (max-width: 1024px) {
+    .hero h1 {
+        font-size: 36px;
+    }
+    
+    nav ul {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .hero h1 {
+        font-size: 32px;
+    }
+    
+    nav ul {
+        display: none; /* Sẽ được xử lý bằng mobile menu sau */
+    }
+    
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-item {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 28px;
+    }
+    
+    .hero p {
+        font-size: 16px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .stat-number {
+        font-size: 36px;
+    }
+    
+    .stat-text {
+        font-size: 16px;
+    }
+}

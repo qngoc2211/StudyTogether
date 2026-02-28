@@ -1,0 +1,255 @@
+/* components/user-menu.css */
+
+/* User Menu Container */
+.user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+/* User Info Button */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 18px;
+    border-radius: 40px;
+    background: linear-gradient(135deg, rgba(255,107,53,0.12) 0%, rgba(255,107,53,0.05) 100%);
+    border: 1.5px solid rgba(255,107,53,0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-info:hover {
+    background: linear-gradient(135deg, rgba(255,107,53,0.18) 0%, rgba(255,107,53,0.1) 100%);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255,107,53,0.25);
+}
+
+.user-info:active {
+    transform: translateY(0);
+}
+
+/* User Avatar Icon */
+.user-info i:first-child {
+    font-size: 28px;
+    color: var(--primary-color);
+    filter: drop-shadow(0 2px 4px rgba(255,107,53,0.3));
+}
+
+/* Username Text */
+.user-info span {
+    font-weight: 600;
+    color: var(--dark-color);
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+/* Dropdown Arrow */
+.user-info i:last-child {
+    font-size: 14px;
+    color: #888;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-menu:hover .user-info i:last-child {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15), 0 5px 10px rgba(0,0,0,0.05);
+    min-width: 220px;
+    padding: 10px 0;
+    z-index: 1000;
+    animation: dropdownSlide 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Dropdown Arrow Pointer */
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 25px;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid white;
+    filter: drop-shadow(0 -4px 4px rgba(0,0,0,0.05));
+}
+
+/* Dropdown Items */
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 22px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.dropdown-menu a i {
+    width: 22px;
+    color: var(--primary-color);
+    font-size: 18px;
+    text-align: center;
+    transition: transform 0.25s ease;
+}
+
+.dropdown-menu a:hover {
+    background: linear-gradient(90deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.02) 100%);
+    color: var(--primary-color);
+    padding-left: 28px;
+}
+
+.dropdown-menu a:hover i {
+    transform: scale(1.1) translateX(2px);
+    color: var(--primary-dark);
+}
+
+/* Divider between items */
+.dropdown-menu a:not(:last-child) {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Logout button special style */
+.dropdown-menu a#logoutBtn {
+    color: #e74c3c;
+}
+
+.dropdown-menu a#logoutBtn i {
+    color: #e74c3c;
+}
+
+.dropdown-menu a#logoutBtn:hover {
+    background: rgba(231, 76, 60, 0.05);
+    color: #c0392b;
+}
+
+.dropdown-menu a#logoutBtn:hover i {
+    color: #c0392b;
+}
+
+/* Show dropdown */
+.show-dropdown {
+    display: block !important;
+}
+
+/* Auth Buttons Container */
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Auth Buttons Styling */
+.auth-buttons .btn {
+    padding: 8px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+.auth-buttons .btn-outline {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+}
+
+.auth-buttons .btn-outline:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255,107,53,0.3);
+}
+
+.auth-buttons .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(255,107,53,0.2);
+}
+
+.auth-buttons .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,107,53,0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-info span {
+        max-width: 80px;
+        font-size: 13px;
+    }
+    
+    .auth-buttons {
+        gap: 8px;
+    }
+    
+    .auth-buttons .btn {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+    
+    .dropdown-menu {
+        min-width: 200px;
+        right: -10px;
+    }
+    
+    .dropdown-menu::before {
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-info {
+        padding: 6px 12px;
+    }
+    
+    .user-info i:first-child {
+        font-size: 24px;
+    }
+    
+    .user-info span {
+        max-width: 60px;
+    }
+    
+    .dropdown-menu {
+        min-width: 180px;
+    }
+    
+    .dropdown-menu a {
+        padding: 12px 18px;
+        font-size: 13px;
+    }
+}
