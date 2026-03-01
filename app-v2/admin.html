@@ -6,7 +6,8 @@
     <title>Study Together - Đồng hành cùng tân sinh viên FPT Đà Nẵng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/app.css">
     <link rel="icon" type="image/png" href="https://daihoc.fpt.edu.vn/favicon.ico">
 </head>
 <body>
@@ -410,18 +411,8 @@
             preventDuplicates: true
         };
     </script>
-
-   <!-- MODULE CHÍNH -->
-<script type="module">
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-
-    // Chỉ redirect khi đã đăng nhập và là admin
-    if (token && role === "admin") {
-        window.location.href = "app-v2/admin.html";
-    }
-</script>
-
-<script type="module" src="js/modules/main.js"></script>
+<script type="module" src="js/guard.js"></script>
+<script type="module" src="js/admin.js"></script>
+<script type="module" src="../js/modules/main.js"></script>
 </body>
 </html>

@@ -3,7 +3,22 @@ import { appState } from './data.js';
 import { login, register } from '../api.js';
 
 /* ===============================
-   MỞ MODAL
+   STORAGE SAFE
+================================= */
+function getStorage() {
+    try {
+        localStorage.setItem("__test", "1");
+        localStorage.removeItem("__test");
+        return localStorage;
+    } catch {
+        return sessionStorage;
+    }
+}
+
+const storage = getStorage();
+
+/* ===============================
+   OPEN MODAL
 ================================= */
 export function openAuthModal(isLogin = true) {
     appState.isLoginMode = isLogin;
@@ -14,8 +29,6 @@ export function openAuthModal(isLogin = true) {
     const switchLink = document.getElementById('switchAuthMode');
     const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
     const emailGroup = document.getElementById('emailGroup');
-
-    console.log("Opening auth modal, isLogin:", isLogin);
 
     if (isLogin) {
         title.textContent = "Đăng nhập";
@@ -35,18 +48,18 @@ export function openAuthModal(isLogin = true) {
 }
 
 /* ===============================
-   ĐÓNG MODAL
+   CLOSE MODAL
 ================================= */
 export function closeAuthModal() {
     const modal = document.getElementById('authModal');
     const form = document.getElementById('authForm');
-    
+
     if (modal) modal.style.display = "none";
     if (form) form.reset();
 }
 
 /* ===============================
-   HANDLE AUTH - CHỈ MỘT LẦN DUY NHẤT
+   HANDLE AUTH
 ================================= */
 export async function handleAuth(event) {
     event.preventDefault();
@@ -55,201 +68,107 @@ export async function handleAuth(event) {
     const email = document.getElementById('email')?.value.trim();
     const password = document.getElementById('password').value;
 
-    console.log("Handling auth, isLoginMode:", appState.isLoginMode);
+    if (!username || !password) {
+        return toastr.error("Vui lòng nhập đầy đủ thông tin!");
+    }
 
     try {
-        // ================= ĐĂNG NHẬP =================
+        /* ================= LOGIN ================= */
         if (appState.isLoginMode) {
-            if (!username || !password) {
-                toastr.error("Vui lòng nhập tên đăng nhập và mật khẩu!");
-                return;
-            }
+
+            let token = null;
 
             try {
-                // Thử gọi API login
-                const token = await login(username, password);
-
-                if (!token) {
-                    throw new Error("Sai tài khoản hoặc mật khẩu!");
-                }
-
-                // Lưu vào localStorage
-                try {
-                    localStorage.setItem("token", token);
-                    localStorage.setItem("username", username);
-                    
-                    // Lấy email từ response nếu có
-                    if (email) localStorage.setItem("email", email);
-                    localStorage.setItem("points", "100");
-                } catch (storageError) {
-                    // Fallback to sessionStorage
-                    sessionStorage.setItem("token", token);
-                    sessionStorage.setItem("username", username);
-                    if (email) sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("points", "100");
-                }
-
-                // Đồng bộ appState
-                appState.currentUser = { name: username };
-
-                toastr.success("Đăng nhập thành công!");
-                closeAuthModal();
-
-                // Reload để cập nhật UI
-                setTimeout(() => location.reload(), 500);
-
-            } catch (apiError) {
-                // Nếu API lỗi, dùng demo mode
-                console.warn("API login failed, using demo mode:", apiError);
-                
-                // Demo login - cho phép đăng nhập với bất kỳ tài khoản nào
-                try {
-                    localStorage.setItem("token", "demo-token-" + Date.now());
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("email", email || username + "@fpt.edu.vn");
-                    localStorage.setItem("points", "100");
-                } catch (e) {
-                    sessionStorage.setItem("token", "demo-token-" + Date.now());
-                    sessionStorage.setItem("username", username);
-                    sessionStorage.setItem("email", email || username + "@fpt.edu.vn");
-                    sessionStorage.setItem("points", "100");
-                }
-
-                appState.currentUser = { name: username };
-                toastr.success("Đăng nhập thành công (Demo Mode)!");
-                closeAuthModal();
-                setTimeout(() => location.reload(), 500);
+                token = await login(username, password);
+            } catch (e) {
+                console.warn("API login failed → Demo mode");
             }
-        } 
-        
-        // ================= ĐĂNG KÝ =================
+
+            // Demo fallback
+            if (!token) {
+                token = "demo-token-" + Date.now();
+            }
+
+            // ⚠ Chỉ set role sau khi có token
+            const role = username.toLowerCase() === "admin" ? "admin" : "user";
+
+            storage.setItem("token", token);
+            storage.setItem("username", username);
+            storage.setItem("role", role);
+
+            appState.currentUser = { name: username, role };
+
+            toastr.success("Đăng nhập thành công!");
+            closeAuthModal();
+
+            setTimeout(() => {
+                if (role === "admin") {
+                    window.location.href = "/app-v2/admin.html";
+                } else {
+                    window.location.href = "/";
+                }
+            }, 500);
+        }
+
+        /* ================= REGISTER ================= */
         else {
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Validate
-            if (!username || !email || !password) {
-                toastr.error("Vui lòng nhập đầy đủ thông tin!");
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                toastr.error("Mật khẩu xác nhận không khớp!");
-                return;
-            }
-
-            if (password.length < 6) {
-                toastr.error("Mật khẩu phải có ít nhất 6 ký tự!");
-                return;
-            }
+            if (!email) return toastr.error("Vui lòng nhập email!");
+            if (password !== confirmPassword)
+                return toastr.error("Mật khẩu không khớp!");
+            if (password.length < 6)
+                return toastr.error("Mật khẩu tối thiểu 6 ký tự!");
 
             try {
-                // Thử gọi API register
-                const success = await register(username, email, password);
-
-                if (!success) {
-                    throw new Error("Đăng ký thất bại!");
-                }
-
+                await register(username, email, password);
                 toastr.success("Đăng ký thành công! Hãy đăng nhập.");
                 closeAuthModal();
-
-                // Chuyển sang login mode
                 setTimeout(() => openAuthModal(true), 300);
-
-            } catch (apiError) {
-                // Nếu API lỗi, dùng demo mode
-                console.warn("API register failed, using demo mode:", apiError);
-                
-                // Demo register
-                try {
-                    localStorage.setItem("token", "demo-token-" + Date.now());
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("email", email);
-                    localStorage.setItem("points", "50");
-                } catch (e) {
-                    sessionStorage.setItem("token", "demo-token-" + Date.now());
-                    sessionStorage.setItem("username", username);
-                    sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("points", "50");
-                }
-
-                toastr.success("Đăng ký thành công! (Demo Mode)");
-                closeAuthModal();
-                
-                // Tự động đăng nhập sau khi đăng ký demo
-                appState.currentUser = { name: username };
-                setTimeout(() => location.reload(), 500);
+            } catch {
+                toastr.error("Đăng ký thất bại!");
             }
         }
-    } catch (error) {
-        console.error("Auth error:", error);
-        
-        // Xóa storage nếu có lỗi
-        try {
-            localStorage.removeItem("token");
-            localStorage.removeItem("username");
-            localStorage.removeItem("email");
-            localStorage.removeItem("points");
-        } catch (e) {
-            sessionStorage.removeItem("token");
-            sessionStorage.removeItem("username");
-            sessionStorage.removeItem("email");
-            sessionStorage.removeItem("points");
-        }
 
-        toastr.error(error.message || "Có lỗi xảy ra! Vui lòng thử lại.");
+    } catch (error) {
+        console.error(error);
+        toastr.error("Có lỗi xảy ra!");
     }
 }
 
 /* ===============================
-   KIỂM TRA TRẠNG THÁI ĐĂNG NHẬP
+   AUTH CHECK (AN TOÀN)
 ================================= */
 export function isAuthenticated() {
-    try {
-        return !!(localStorage.getItem("token") || sessionStorage.getItem("token"));
-    } catch (e) {
-        return false;
-    }
+    const token = storage.getItem("token");
+    const username = storage.getItem("username");
+    return !!(token && username);
 }
 
-/* ===============================
-   LẤY THÔNG TIN USER HIỆN TẠI
-================================= */
 export function getCurrentUser() {
-    try {
-        const username = localStorage.getItem("username") || sessionStorage.getItem("username");
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-        
-        if (username && token) {
-            return { name: username };
-        }
-        return null;
-    } catch (e) {
-        return null;
+    const token = storage.getItem("token");
+    const username = storage.getItem("username");
+    const role = storage.getItem("role");
+
+    if (token && username) {
+        return { name: username, role };
     }
+    return null;
 }
 
 /* ===============================
-   ĐĂNG XUẤT
+   LOGOUT
 ================================= */
 export function logout() {
-    try {
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
-        localStorage.removeItem("email");
-        localStorage.removeItem("points");
-    } catch (e) {
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("username");
-        sessionStorage.removeItem("email");
-        sessionStorage.removeItem("points");
-    }
-    
+    storage.removeItem("token");
+    storage.removeItem("username");
+    storage.removeItem("role");
+
     appState.currentUser = null;
+
     toastr.success("Đăng xuất thành công!");
-    
-    // Reload về trang chủ
+
     setTimeout(() => {
-        window.location.href = '/';
+        window.location.href = "/";
     }, 500);
 }
