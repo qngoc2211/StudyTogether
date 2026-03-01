@@ -1,20 +1,31 @@
 // ===============================
-// APP-V2 CONFIG
+// APP CONFIG
 // ===============================
 
-// Auto detect môi trường
-const isLocalhost =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
+// Detect môi trường
+const hostname = window.location.hostname;
 
-// Backend URL
-export const CONFIG = {
-    API_BASE: isLocalhost
-        ? "http://localhost:5000/api"
-        : "https://studytogether-backend.onrender.com/api",
+const isLocal =
+  hostname === "localhost" ||
+  hostname === "127.0.0.1";
 
-    APP_NAME: "StudyTogether Admin",
+// ===============================
+// BASE URL (KHÔNG có /api)
+// ===============================
 
-    VERSION: "2.0.0"
-};
-export const BASE_URL = "https://studytogether-backend.onrender.com";
+export const BASE_URL = isLocal
+  ? "http://localhost:5000"
+  : "https://studytogether-backend.onrender.com";
+
+// ===============================
+// API BASE (có /api)
+// ===============================
+
+export const API_BASE = `${BASE_URL}/api`;
+
+// ===============================
+// APP INFO
+// ===============================
+
+export const APP_NAME = "StudyTogether Admin";
+export const VERSION = "2.0.0";
