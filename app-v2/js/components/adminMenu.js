@@ -1,0 +1,38 @@
+export function renderAdminMenu() {
+
+    const dropdown = document.getElementById("dropdownMenu");
+    if (!dropdown) return;
+
+    // Chỉ render nếu là admin
+    if (localStorage.getItem("role") !== "admin") return;
+
+    // Tránh render nhiều lần
+    if (dropdown.querySelector(".admin-menu-group")) return;
+
+    // Tạo group admin
+    const adminGroup = document.createElement("div");
+    adminGroup.classList.add("admin-menu-group");
+
+    adminGroup.innerHTML = `
+        <a href="#" data-page="dashboard">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </a>
+
+        <a href="#" data-page="post">
+            <i class="fas fa-file-alt"></i> Quản lý Post
+        </a>
+
+        <a href="#" data-page="quiz">
+            <i class="fas fa-question-circle"></i> Quản lý Quiz
+        </a>
+
+        <a href="#" data-page="user">
+            <i class="fas fa-users"></i> Quản lý User
+        </a>
+
+        <hr/>
+    `;
+
+    // Thêm lên đầu menu
+    dropdown.prepend(adminGroup);
+}

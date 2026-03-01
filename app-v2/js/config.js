@@ -17,3 +17,4 @@ export const CONFIG = {
 
     VERSION: "2.0.0"
 };
+export const BASE_URL = "https://studytogether-backend.onrender.com";
